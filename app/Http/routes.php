@@ -11,6 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@index');
+
+Route::get('/image-compressor/', 'ImageCompressController@index');
+
+Route::post('/image-compressor/compress-images', 'ImageCompressController@compressImages');

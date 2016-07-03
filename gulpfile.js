@@ -12,5 +12,10 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(mix) {
-    mix.sass('app.scss');
+	mix.browserSync({
+		proxy: 'laravel-app',
+		files: ['public/**/*.css', 'resources/**/*']
+	});
+
+    mix.sass('app.scss', 'public/assets/css');
 });

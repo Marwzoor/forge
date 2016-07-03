@@ -1,0 +1,1 @@
+{"version":3,"sources":["_containers.scss"],"names":[],"mappings":"AAAA;EACC,0BAA0B;EAC1B,WAAW,EACX;;AAED;EACC,0BAA0B,EAC1B","file":"app.css","sourcesContent":[".page-container {\n\tbackground-color: #efefef;\n\tpadding: 0;\n}\n\nmain {\n\tpadding: 0 20px 20px 20px;\n}"],"sourceRoot":"/source/"}
