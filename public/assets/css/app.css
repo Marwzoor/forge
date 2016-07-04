@@ -1,8 +1,24 @@
+body {
+  min-height: 100vh; }
+
 .page-container {
   background-color: #efefef;
-  padding: 0; }
+  padding: 0;
+  margin-top: 20px; }
 
 main {
   padding: 0 20px 20px 20px; }
+
+header .main-navigation {
+  border-radius: 0;
+  background-color: #ff4f4f;
+  border: 1px solid #ff4f4f; }
+  header .main-navigation > .nav > li > a {
+    color: #fff; }
+  header .main-navigation > .nav > .active > a, header .main-navigation > .nav .open > a {
+    background-color: #d32f2f;
+    color: #fff; }
+    header .main-navigation > .nav > .active > a:hover, header .main-navigation > .nav > .active > a:focus, header .main-navigation > .nav .open > a:hover, header .main-navigation > .nav .open > a:focus {
+      background-color: #d32f2f; }
 
 /*# sourceMappingURL=app.css.map */
