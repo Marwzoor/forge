@@ -6,7 +6,7 @@
 
 <p>Upload multiple images here and download a ZIP-file containing the image files resized to your preferred size.</p>
 
-<form target="_BLANK" method="POST" action="{{ action('ImageCompressController@compressImages') }}" enctype="multipart/form-data">
+<form class="image-compress-form" target="_BLANK" method="POST" action="{{ action('ImageCompressController@compressImages') }}" enctype="multipart/form-data">
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	<div class="form-group">
 		<div class="row">
@@ -44,9 +44,18 @@
 			</div>
 		</div>
 	</div>
-	<button class="btn btn-primary" type="submit">
-		Compress and download
-	</button>
+	<div class="form-group">
+		<button class="btn btn-primary" type="submit">
+			Compress and download
+		</button>
+	</div>
+	<div class="form-group">
+		<div class="progress" style="display: none;">
+		 	<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+		    	<span class="sr-only"><span class="progress-percentage">0%</span> Complete</span>
+		 	</div>
+		</div>
+	</div>
 </form>
 
 @stop

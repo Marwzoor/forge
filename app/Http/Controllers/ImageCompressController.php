@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use \Input, \ZipArchive, \Image;
+use App\Models\ImageCompression;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -27,15 +28,20 @@ class ImageCompressController extends Controller
 			++$count;
 		} while(file_exists($zipFile));
 
+		do {
+			$hash = md5(uniqid(rand(), true));
+		} while(!is_null(ImageCompression::where('hash', '=', $hash)->first()));
+
 		$zip = new ZipArchive();
 
 		if(!$zip->open($zipFile, ZipArchive::OVERWRITE)) {
-			return redirect()->action('ImageCompressController@index')->with('error', 'Couldn\'t open ZIP-archive!');
+			return response()->json([
+				"success"	=> false,
+				"message"	=> "An error occurred. Files couldn't be compressed.",
+			], 500);
 		}
 
 		foreach($images as $image) {
-			// dd($image);
-
 			$img = Image::make($image)->resize($maxWidth, $maxHeight, function ($constraint) {
 	            $constraint->aspectRatio();
 	            $constraint->upsize();
@@ -48,8 +54,30 @@ class ImageCompressController extends Controller
 
 		$zip->close();
 
-		$fileName = "compressed-images-" . date( "Y-m-d" ) . ".zip";
+		$imageCompression = new ImageCompression();
+		$imageCompression->file_uri = $zipFile;
+		$imageCompression->hash = $hash;
+		$imageCompression->client_ip = request()->ip();
+		$imageCompression->save();
 
-		return response()->download($zipFile, $fileName);
+		return response()->json([
+			"downloadUrl"	=> action('ImageCompressController@downloadCompressedImages', ['hash' => $hash]),
+			"message"		=> "Compression completed. Downloading...",
+			"success"		=> true,
+		], 200);
+	}
+
+	public function downloadCompressedImages($hash) {
+		$imageCompression = ImageCompression::where('hash', '=', $hash)
+			->where('client_ip', '=', request()->ip())
+			->first();
+
+		if(is_null($imageCompression)) {
+			return response("Couldn't find compressed file.", 404);
+		}
+
+		$fileName = "image-compression-" . date("Y-m-d", strtotime($imageCompression->created_at)) . ".zip";
+
+		return response()->download($imageCompression->file_uri, $fileName);
 	}
 }

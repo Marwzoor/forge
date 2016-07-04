@@ -16,3 +16,4 @@ Route::get('/', 'HomeController@index');
 Route::get('/image-compressor/', 'ImageCompressController@index');
 
 Route::post('/image-compressor/compress-images', 'ImageCompressController@compressImages');
+Route::get('/image-compressor/compress-images/download/{hash}', 'ImageCompressController@downloadCompressedImages');
