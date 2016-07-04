@@ -39,7 +39,7 @@ class CleanCompressions extends Command
      */
     public function handle()
     {
-        $imageCompressions = ImageCompression::where('created_at', '<', Carbon::now()->subDay())
+        $imageCompressions = ImageCompression::where('created_at', '<', Carbon::now()->subHour())
             ->get();
 
         foreach($imageCompressions as $imageCompression) {
