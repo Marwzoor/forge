@@ -15,7 +15,7 @@ jQuery(document).ready(function ($) {
 		$form.find(".progress .progress-bar").css("width", "0%");
 		$form.find(".progress .progress-percentage").text("0%");
 
-		request.onprogress = function (event) {
+		request.upload.onprogress = function (event) {
 			var percentComplete = (event.loaded / event.total) * 100;
 			$form.find(".progress .progress-bar").css("width", percentComplete + "%");
 			$form.find(".progress .progress-percentage").text(percentComplete + "%");
