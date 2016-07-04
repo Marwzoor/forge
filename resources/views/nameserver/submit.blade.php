@@ -1,5 +1,7 @@
 @extends('layouts.page')
 
+@section('title', 'Nameserver submit')
+
 @section('content')
 
 <h1>Submit nameserver information</h1>

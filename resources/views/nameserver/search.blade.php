@@ -1,5 +1,7 @@
 @extends('layouts.page')
 
+@section('title', 'Nameserver search')
+
 @section('content')
 
 <h1>Nameserver search</h1>

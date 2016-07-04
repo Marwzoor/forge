@@ -1,5 +1,7 @@
 @extends('layouts.page')
 
+@section('title', 'Image compression')
+
 @section('content')
 
 <h1>Image compressing</h1>
