@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use \Input, \ZipArchive, \Image;
+use \Input, \ZipArchive, \Image, \File;
 use App\Models\ImageCompression;
 use Illuminate\Http\Request;
 
@@ -22,6 +22,10 @@ class ImageCompressController extends Controller
 		$images = Input::file('images');
 
 		$count = 1;
+
+		if(!File::exists(storage_path() . '/app/image-compressions/')) {
+			File::makeDirectory(storage_path() . '/app/image-compressions/', $mode = 0755, true, true);
+		}
 
 		do {
 			$zipFile = storage_path() . '/app/image-compressions/' . microtime(true) . '-' . $count .'.zip';
