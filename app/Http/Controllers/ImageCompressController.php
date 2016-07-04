@@ -34,7 +34,7 @@ class ImageCompressController extends Controller
 
 		$zip = new ZipArchive();
 
-		if(!$zip->open($zipFile, ZipArchive::OVERWRITE)) {
+		if(!$zip->open($zipFile, ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE)) {
 			return response()->json([
 				"success"	=> false,
 				"message"	=> "An error occurred. Files couldn't be compressed.",
