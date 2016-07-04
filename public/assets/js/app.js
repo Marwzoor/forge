@@ -50,4 +50,19 @@ jQuery(document).ready(function ($) {
 		// 	}
 		// });
 	});
+
+	$(".nameserver-search-form").submit(function (e) {
+		e.preventDefault();
+
+		$(".nameserver-result").slideUp(200);
+
+		$.post($(this).attr("action"), $(this).serialize(), function (data) {
+			if(data.success) {
+				$(".nameserver-result .nameserver-domain").text(data.domain);
+				$(".nameserver-result .nameserver-company-name").text(data.companyName);
+				$(".nameserver-result .nameserver-company-url").attr("href", data.companyUrl).text(data.companyUrl);
+				$(".nameserver-result").slideDown(200);
+			}
+		});
+	});
 });

@@ -10,7 +10,7 @@ use App\Http\Requests;
 
 class ImageCompressController extends Controller
 {
-	public function index() {
+	public function getIndex() {
 		return view('image-compressor');
 	}
 
