@@ -56,13 +56,32 @@ jQuery(document).ready(function ($) {
 
 		$(".nameserver-result").slideUp(200);
 
-		$.post($(this).attr("action"), $(this).serialize(), function (data) {
-			if(data.success) {
+		$.post($(this).attr("action"), $(this).serialize())
+			.done(function (data) {
+				$("#result").html('<div class="alert alert-success">' + data.message + '</div>');
 				$(".nameserver-result .nameserver-domain").text(data.domain);
 				$(".nameserver-result .nameserver-company-name").text(data.companyName);
 				$(".nameserver-result .nameserver-company-url").attr("href", data.companyUrl).text(data.companyUrl);
 				$(".nameserver-result").slideDown(200);
-			}
-		});
+			})
+			.fail(function (data) {
+				data = JSON.parse(data.responseText);
+
+				$("#result").html('<div class="alert alert-danger">' + data.message + '</div>');
+			});
+	});
+
+	$(".nameserver-submit-form").submit(function (e) {
+		e.preventDefault();
+
+		$.post($(this).attr("action"), $(this).serialize())
+			.done(function (data) {
+				$("#result").html('<div class="alert alert-success">' + data.message + '</div>');
+			})
+			.fail(function (data) {
+				data = JSON.parse(data.responseText);
+
+				$("#result").html('<div class="alert alert-danger">' + data.message + '</div>');
+			});
 	});
 });

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use \Input, \Mail;
+use \Input, \Mail, \Validator;
 
 use App\Models\Nameserver;
 use Illuminate\Http\Request;
@@ -16,6 +16,17 @@ class NameserverController extends Controller
     }
 
     public function postSearch() {
+    	$validator = Validator::make(Input::all(), [
+            'domain' 		=> 'required',
+        ]);
+
+        if($validator->fails()) {
+        	return response()->json([
+        		"success"	=> false,
+        		"message"	=> $validator->errors()->first()
+        	], 400);
+        }
+
     	$domain = Input::get('domain', false);
 
     	$nameservers = dns_get_record( $domain, DNS_NS );
@@ -38,7 +49,7 @@ class NameserverController extends Controller
 
     	if($matchedNameserver === false) {
     		return response()->json([
-    			"message"	=> "Nameserver not found in our registry.",
+    			"message"	=> "Nameserver \"" . ( isset( $nameservers[0]["target"] ) ? $nameservers[0]["target"] : "" ) . "\" not found in our registry.",
     			"success"	=> false,
     		], 404);
     	}
@@ -57,6 +68,19 @@ class NameserverController extends Controller
     }
 
     public function postSubmit() {
+    	$validator = Validator::make(Input::all(), [
+            'hostname' 		=> 'required|unique:nameservers,hostname',
+            'company_name' 	=> 'required',
+            'company_url'	=> 'required|url',
+        ]);
+
+        if($validator->fails()) {
+        	return response()->json([
+        		"success"	=> false,
+        		"message"	=> $validator->errors()->first()
+        	], 400);
+        }
+
       	$hostname = Input::get('hostname');
     	$companyName = Input::get('company_name');
     	$companyUrl = Input::get('company_url');
@@ -70,14 +94,17 @@ class NameserverController extends Controller
     	$nameserver->submitter_ip = request()->ip();
     	$nameserver->save();
 
-    	Mail::send('emails.confirm-nameserver', ['confirmationCode' => $confirmationCode], function ($mail) {
+    	Mail::send('emails.confirm-nameserver', ['nameserver' => $nameserver, 'confirmationCode' => $confirmationCode], function ($mail) {
             $mail->from('carlmartinwerner@gmail.com', 'Martin Werner App');
 
             $mail->to('carlmartinwerner@gmail.com', 'Martin Werner')
             	->subject('Confirm new nameserver submission');
         });
 
-        return response("Nameserver submitted.", 200);
+        return response()->json([
+        	"success"	=> true,
+        	"message"	=> "Nameserver submitted!",
+        ], 200);
     }
 
     public function confirmNameserver($code) {

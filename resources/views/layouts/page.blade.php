@@ -10,7 +10,8 @@
 			@include('includes.header')
 			</header>
 			<main class="bg-default">
-			@yield('content')
+				<div id="result"></div>
+				@yield('content')
 			</main>
 			<footer>
 			@include('includes.footer')
