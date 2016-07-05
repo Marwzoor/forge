@@ -31,6 +31,17 @@ class NameserverController extends Controller
 
     	$nameservers = dns_get_record( $domain, DNS_NS );
 
+
+    	if(!isset($nameservers[0])) {
+	    	return response()->json([
+				"message"	=> sprintf(
+					'No nameservers found for domain <code>%s</code>.',
+					$domain
+				),
+				"success"	=> false,
+			], 404);
+	    }
+
     	$matchedNameserver = false;
 
     	foreach($nameservers as $nameserver) {
@@ -49,7 +60,11 @@ class NameserverController extends Controller
 
     	if($matchedNameserver === false) {
     		return response()->json([
-    			"message"	=> "Nameserver \"" . ( isset( $nameservers[0]["target"] ) ? $nameservers[0]["target"] : "" ) . "\" not found in our registry.",
+    			"message"	=> sprintf(
+    				'Nameserver <code>%s</code> not found in our registry. Have information about it? <a target="_BLANK" href="%s">Submit it here.</a>',
+    				$nameservers[0]["target"],
+    				action( 'NameserverController@getSubmit', ['hostname' => $nameservers[0]["target"]] )
+    			),
     			"success"	=> false,
     		], 404);
     	}

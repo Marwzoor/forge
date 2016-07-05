@@ -14,7 +14,7 @@
 		<label for="hostname">
 			Hostname
 		</label>
-		<input class="form-control" type="text" id="hostname" name="hostname" placeholder="Hostname (ns1.example.com)">
+		<input class="form-control" value="{{ Input::get('hostname', '') }}" type="text" id="hostname" name="hostname" placeholder="Hostname (ns1.example.com)">
 	</div>
 	<div class="form-group">
 		<div class="row">
@@ -22,13 +22,13 @@
 				<label for="company_name">
 					Company name
 				</label>
-				<input class="form-control" type="text" id="company_name" name="company_name" placeholder="Company name">
+				<input class="form-control" value="{{ Input::get('company_name', '') }}" type="text" id="company_name" name="company_name" placeholder="Company name">
 			</div>
 			<div class="col-xs-6">
 				<label for="company_url">
 					Company url
 				</label>
-				<input class="form-control" type="url" id="company_url" name="company_url" placeholder="Company url">
+				<input class="form-control" value="{{ Input::get('company_url', '') }}" type="url" id="company_url" name="company_url" placeholder="Company url">
 			</div>
 		</div>
 	</div>
